@@ -12,25 +12,35 @@ def sum(arr)
 end
 
 def max_2_sum (arr)
-  answer = 0;
-  length = arr.length();
-  if(length == 0)
-    answer = 0;
-  elsif(length == 1)
-    answer = arr[0];
-  else
-    arr.sort;
-    answer = arr[length-1] + arr[length-2];
+  if(arr.empty?)
+    return 0;
+  elsif (arr.size == 1)
+    return arr[0];
   end
+  max = -1000000;
+  index = 0;
+  max2 = max;
+  (0..arr.size - 1).each { |i|
+    if (arr[i] > max)
+      max = arr[i];
+      index = i;
+    end
+  }
+  (0..arr.size - 1).each { |i|
+    if (arr[i] > max2&&i!=index)
+      max2 = arr[i];
+    end
+  }
+  answer = max + max2;
   return answer;
   # YOUR CODE HERE
 end
 
 def sum_to_n? (arr, n)
   if(arr.empty? && n.zero?)
-    return true;
+    return false;
   else
-    return arr.combination(2).any?{|a,b| a+b == b}
+    return arr.combination(2).any?{|a,b| a+b == n}
   end
   # YOUR CODE HERE
 end
@@ -46,10 +56,11 @@ end
 def starts_with_consonant? (s)
   if(s.empty?)
     return false;
+  elsif s.match?(/^[[:alpha:][:blank:]]+$/) == false
+    return false;
   end
-  s = s.downcase!;
   l = s[0];
-  if(l == 'a' || l == 'e' || l=='i'||l=='o'||l=='u' )
+  if(l == 'a' || l == 'e' || l=='i'||l=='o'||l=='u' ||l == 'A' || l == 'E' || l=='I'||l=='O'||l=='U' )
     return false;
   else
     return true;
@@ -59,6 +70,7 @@ end
 
 def binary_multiple_of_4? (s)
   return true if s == 0;
+  return false if s.empty?;
   if(s.count('01') == s.size)
     return true if s.to_i(2) %4 == 0;
   end
@@ -78,7 +90,19 @@ class BookInStock
     @isbn = isbn_var;
     @price = price_var;
   end
+  def isbn
+    return @isbn
+  end
 
+  def isbn=(isbn)
+    @isbn = isbn
+  end
+  def price=(price)
+    @price = price
+  end
+  def price
+    return @price
+  end
   def price_as_string
     return "$" + '%.2f' % @price;
   end
